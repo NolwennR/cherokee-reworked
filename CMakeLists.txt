@@ -6,6 +6,7 @@ enable_testing()
 
 set(SERVER_DIR ./server)
 set(WORKER_DIR ${SERVER_DIR}/worker)
+set(UTILS_DIR ${SERVER_DIR}/utils)
 
 set(SOURCES
     ${SERVER_DIR}/server.cpp
@@ -19,6 +20,7 @@ INCLUDE_DIRECTORIES( ${Boost_INCLUDE_DIR} )
 link_directories(${Boost_LIBRARY_DIR})
 
 include_directories(${SERVER_DIR})
+include_directories(${UTILS_DIR})
 include_directories(.)
 
 add_executable(cherokee ${SOURCES} cherokee.cpp)

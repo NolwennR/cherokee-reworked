@@ -1,5 +1,5 @@
-#include "utils/spdlog/spdlog.h"
-#include "utils/ini/ini.hpp"
+#include "spdlog/spdlog.h"
+#include "ini/ini.hpp"
 #include "server.hpp"
 
 #include <sys/epoll.h> 
@@ -13,15 +13,15 @@
 #include <netdb.h>
 #include <array>
 
-Server::Server()
+server::server()
 {
 }
 
-Server::~Server()
+server::~server()
 {
 }
 
-int Server::startServer()
+int server::start_server()
 {
     spdlog::info("Welcome to cherokee!");
     spdlog::info("Loading config file...");
@@ -31,21 +31,20 @@ int Server::startServer()
     // open fd
     try
     {
-        BindSocket("10000");
+        bind_socket("10000");
     }
-    catch(const std::exception& e)
+    catch(const std::runtime_error& e)
     {
-        std::cerr << e.what() << '\n';
+        spdlog::critical("");
+        exit(EXIT_FAILURE);
     }
-    
-
 
     // start a define number of workers
 
     return 0;
 }
 
-int Server::BindSocket(std::string const& port)
+int server::bind_socket(std::string const& port)
 {
     struct addrinfo hints;
     int socketfd;
@@ -60,15 +59,13 @@ int Server::BindSocket(std::string const& port)
 
     if (sockt != 0)
     {
-        spdlog::critical("getaddrinfo failed");
-        return -1;
+        throw std::runtime_error("bind_socket");
     }
 
     socketfd = socket(result->ai_family, result->ai_socktype, result->ai_protocol);
     if (socketfd == -1)
     {
-        spdlog::critical("Failed to create socket.");
-        return -1;
+        throw std::runtime_error("Failed to create socket.");
     }
 
     // sockt = bind(socketfd, rp->ai_addr, rp->ai_addrlen);

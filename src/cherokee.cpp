@@ -3,9 +3,9 @@
 
 int main()
 {
-    Server server = Server();
+    server* srv = new server();
     
-    server.startServer();
+    srv->start_server();
 
     return 0;
 }
